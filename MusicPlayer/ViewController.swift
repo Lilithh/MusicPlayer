@@ -15,6 +15,7 @@ class ViewController: UIViewController, MyProgressDelegate {
     
     var image = UIImageView()
     let playAndPause = UIButton(type: .custom)
+     let loveMusic = UIButton(type: .custom)
     var progress = TouchedAbleProgress()
     var currentLabel = UILabel()
     var totalLabel = UILabel()
@@ -22,29 +23,34 @@ class ViewController: UIViewController, MyProgressDelegate {
     var timer: Timer?
     var tapped: Float?
     var totalTime: TimeInterval?
+    var musicResource: [String] = ["Lorde - Green Light"]
+    var myLoveMusic: [String] = []
+    var isLoved: [Bool] = [false]
+    var currentMusic: Int!
     var play: Bool = false
     var getTime: Bool = false
     let width = UIScreen.main.bounds.width
     let height = UIScreen.main.bounds.height
+    var musicName: String?
+    var authorName: String?
+    var albumImage: UIImage?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
         //获取歌曲数据
-        let musicResource = "Lorde - Green Light"
-        let musicName = "Green Light"
-        let authorName = "Lorde"
-        let albumImage = "image"
         
         //在这里声明progress.delegate将不能代理传值
-        image = UIImageView(frame: CGRect(x:0, y:0, width: width, height: height/5*3-30))
-        image.image = UIImage(named: albumImage)
-        creatInformationInterFace(music: musicName, author: authorName)
+        self.currentMusic = 0
+        creatPlayer(music: musicResource[currentMusic])
         creatProgress()
         creatControlArea()
-        creatPlayer(music: musicResource)
-        timer = Timer.scheduledTimer(timeInterval: 0.4, target: self, selector: #selector(upDataTime), userInfo: nil, repeats: true)
+        creatInformationInterFace(music: musicName ?? "Unkonw", author: authorName ?? "Unknow")
+        timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(upDataTime), userInfo: nil, repeats: true)
+        let replaceImage = UIImage(named: "image")
+        image = UIImageView(frame: CGRect(x:0, y:0, width: width, height: height/5*3-30))
+        image.image = albumImage ?? replaceImage
         self.view.addSubview(image)
     }
     
@@ -59,12 +65,28 @@ class ViewController: UIViewController, MyProgressDelegate {
     func creatPlayer(music: String) {
         let path = Bundle.main.path(forResource: music, ofType: "mp3")
         let pathURL = NSURL(fileURLWithPath: path!)
+        let urlAssret = AVURLAsset(url: pathURL as URL, options: nil)
+        for format in urlAssret.availableMetadataFormats {
+            for mediaData in urlAssret.metadata(forFormat: format) {
+                if mediaData.commonKey?.rawValue == "title" {
+                    self.musicName = mediaData.value as? String
+                }
+                if mediaData.commonKey?.rawValue == "artist" {
+                    self.authorName = mediaData.value as? String
+                }
+                if mediaData.commonKey?.rawValue == "artwork" {
+                    self.albumImage = UIImage(data: mediaData.value as! Data)!
+                }
+            }
+        }
         do {
             self.mp3Player = try AVAudioPlayer(contentsOf: pathURL as URL)
             print ("initation well")
         } catch {
             mp3Player = nil
         }
+        
+        
         mp3Player?.prepareToPlay()
         timer?.invalidate()
         currentLabel.text = "00:00"
@@ -122,26 +144,32 @@ class ViewController: UIViewController, MyProgressDelegate {
     
     func creatControlArea() {
         let musicList = UIButton(type: .custom)
-        let loveMusic = UIButton(type: .custom)
         let previousMusic = UIButton(type: .custom)
         let nextMusic = UIButton(type: .custom)
         musicList.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
         musicList.center = CGPoint(x: 30, y: height/20*17)
         musicList.setImage(UIImage(named: "music"), for: .normal)
+        musicList.setImage(UIImage(named: "player"), for: .highlighted)
         loveMusic.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
         loveMusic.center = CGPoint(x: width - 30, y: height/20*17)
         loveMusic.setImage(UIImage(named: "heart"), for: .normal)
         previousMusic.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
         previousMusic.center = CGPoint(x: width/4, y: height/20*17)
         previousMusic.setImage(UIImage(named: "back"), for: .normal)
+        previousMusic.setImage(UIImage(named: "rewind"), for: .highlighted)
         nextMusic.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
         nextMusic.center = CGPoint(x: width/4*3, y: height/20*17)
         nextMusic.setImage(UIImage(named: "next"), for: .normal)
+        nextMusic.setImage(UIImage(named: "forward"), for: .highlighted)
         self.playAndPause.frame = CGRect(x: 0, y: 0, width: 67, height: 67)
         self.playAndPause.center = CGPoint(x: width/2, y: height/20*17)
         self.playAndPause.setImage(UIImage(named: "play"), for: .normal)
         
         self.playAndPause.addTarget(self, action: #selector(playOrPause), for: .touchUpInside)
+        self.loveMusic.addTarget(self, action: #selector(loveOrDisloveThisMusic), for: .touchUpInside)
+        previousMusic.addTarget(self, action: #selector(previouss), for: .touchUpInside)
+        nextMusic.addTarget(self, action: #selector(nextt), for: .touchUpInside)
+        musicList.addTarget(self, action: #selector(listt), for: .touchUpInside)
         
         self.view.addSubview(musicList)
         self.view.addSubview(loveMusic)
@@ -161,6 +189,27 @@ class ViewController: UIViewController, MyProgressDelegate {
             self.playAndPause.setImage(UIImage(named: "play"), for: .normal)
         }
     }
+    @objc func loveOrDisloveThisMusic() {
+        if !isLoved[currentMusic] {
+            self.myLoveMusic.append(musicResource[currentMusic])
+            self.loveMusic.setImage(UIImage(named: "redHeart"), for: .normal)
+            self.isLoved[currentMusic] = true
+        } else {
+            self.loveMusic.setImage(UIImage(named: "heart"), for: .normal)
+            self.myLoveMusic.remove(at: currentMusic)
+            self.isLoved[currentMusic] = false
+        }
+    }
+    @objc func previouss() {
+        //do something
+    }
+    @objc func nextt() {
+        //do something
+    }
+    @objc func listt() {
+        // summon the music list
+    }
+    
     
     @objc func upDataTime() {
         let current = mp3Player?.currentTime
