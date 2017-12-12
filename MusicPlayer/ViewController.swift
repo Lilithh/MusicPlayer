@@ -10,14 +10,18 @@ import UIKit
 import AVFoundation
 import MediaPlayer
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, MyProgressDelegate {
+   
+    
     var image = UIImageView()
     let playAndPause = UIButton(type: .custom)
-    var progress = UIProgressView()
+    var progress = TouchedAbleProgress()
     var currentLabel = UILabel()
     var totalLabel = UILabel()
     var mp3Player: AVAudioPlayer?
     var timer: Timer?
+    var tapped: Float?
+    var totalTime: TimeInterval?
     var play: Bool = false
     var getTime: Bool = false
     let width = UIScreen.main.bounds.width
@@ -33,6 +37,7 @@ class ViewController: UIViewController {
         let authorName = "Lorde"
         let albumImage = "image"
         
+        //在这里声明progress.delegate将不能代理传值
         image = UIImageView(frame: CGRect(x:0, y:0, width: width, height: height/5*3-30))
         image.image = UIImage(named: albumImage)
         creatInformationInterFace(music: musicName, author: authorName)
@@ -40,11 +45,16 @@ class ViewController: UIViewController {
         creatControlArea()
         creatPlayer(music: musicResource)
         timer = Timer.scheduledTimer(timeInterval: 0.4, target: self, selector: #selector(upDataTime), userInfo: nil, repeats: true)
-
-        
         self.view.addSubview(image)
     }
     
+    func transChanged(progress: TouchedAbleProgress, value: Float) {
+        self.tapped = value
+        if totalTime != nil {
+            self.mp3Player?.currentTime = totalTime!*Double(value)
+            print(value)
+        }
+    }
     
     func creatPlayer(music: String) {
         let path = Bundle.main.path(forResource: music, ofType: "mp3")
@@ -88,11 +98,14 @@ class ViewController: UIViewController {
     }
     
     func creatProgress() {
-        progress = UIProgressView(progressViewStyle: .bar)
+        progress = TouchedAbleProgress()
         currentLabel = UILabel(frame: CGRect(x: 20, y: self.height/4*3-7, width: 50, height: 15))
         totalLabel = UILabel(frame: CGRect(x: width - 70, y: self.height/4*3-7, width: 50, height: 15))
         progress.frame = CGRect(x: width/4, y: self.height/4*3, width: width/2, height: 10)
         progress.progress = 1
+        self.progress.delegate = self
+        progress.transform = CGAffineTransform.init(scaleX: 1.0, y: 2.0)
+        progress.slideSquare.transform = CGAffineTransform.init(scaleX: 1.0, y: 0.5)
         currentLabel.textColor = UIColor(white: 0.7, alpha: 1)
         currentLabel.textAlignment = .left
         currentLabel.backgroundColor = .clear
@@ -156,6 +169,7 @@ class ViewController: UIViewController {
             let rate = CGFloat(current!/total!)
             progress.setProgress(Float(rate), animated: true)
             if !getTime{
+                totalTime = total
                 let totalMin = Int(total!)/60
                 let totalSec = Int(total!)%60
                 var TotalMin: String = ""
@@ -188,10 +202,12 @@ class ViewController: UIViewController {
                 CurrentSec = "\(currentSec)"
             }
             self.currentLabel.text = "\(CurrentMin):\(CurrentSec)"
-            
+            self.progress.slideSquare.center = CGPoint(x: CGFloat(self.progress.progress)*self.progress.bounds.size.width, y: self.progress.bounds.size.height/2)
+//            print(self.tapped ?? "boo")
         }
     }
-
+    
+   
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -200,4 +216,9 @@ class ViewController: UIViewController {
 
 
 }
+
+protocol MyProgressDelegate: NSObjectProtocol {
+    func transChanged(progress: TouchedAbleProgress, value: Float)
+}
+
 

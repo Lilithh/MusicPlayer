@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		094E02671FDFAC9300F29546 /* short.png in Resources */ = {isa = PBXBuildFile; fileRef = 094E02661FDFAC9300F29546 /* short.png */; };
 		09F0F0251FDE588B007893D0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09F0F0241FDE588B007893D0 /* AppDelegate.swift */; };
 		09F0F0271FDE588B007893D0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09F0F0261FDE588B007893D0 /* ViewController.swift */; };
 		09F0F02A1FDE588B007893D0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 09F0F0281FDE588B007893D0 /* Main.storyboard */; };
@@ -22,6 +23,7 @@
 		09F0F07C1FDE7929007893D0 /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = 09F0F0761FDE7929007893D0 /* play.png */; };
 		09F0F07E1FDE7B86007893D0 /* image.png in Resources */ = {isa = PBXBuildFile; fileRef = 09F0F07D1FDE7B86007893D0 /* image.png */; };
 		09F0F0811FDECEEC007893D0 /* Lorde - Green Light.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 09F0F0801FDECEEC007893D0 /* Lorde - Green Light.mp3 */; };
+		09F0F0831FDEE0BA007893D0 /* TouchedAbleProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09F0F0821FDEE0BA007893D0 /* TouchedAbleProgress.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,6 +44,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		094E02661FDFAC9300F29546 /* short.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = short.png; sourceTree = "<group>"; };
 		09F0F0211FDE588B007893D0 /* MusicPlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MusicPlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		09F0F0241FDE588B007893D0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		09F0F0261FDE588B007893D0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -63,6 +66,7 @@
 		09F0F0761FDE7929007893D0 /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play.png; sourceTree = "<group>"; };
 		09F0F07D1FDE7B86007893D0 /* image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = image.png; sourceTree = "<group>"; };
 		09F0F0801FDECEEC007893D0 /* Lorde - Green Light.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Lorde - Green Light.mp3"; sourceTree = "<group>"; };
+		09F0F0821FDEE0BA007893D0 /* TouchedAbleProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchedAbleProgress.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,6 +119,7 @@
 			children = (
 				09F0F0241FDE588B007893D0 /* AppDelegate.swift */,
 				09F0F0261FDE588B007893D0 /* ViewController.swift */,
+				09F0F0821FDEE0BA007893D0 /* TouchedAbleProgress.swift */,
 				09F0F0281FDE588B007893D0 /* Main.storyboard */,
 				09F0F02D1FDE588B007893D0 /* LaunchScreen.storyboard */,
 				09F0F0301FDE588B007893D0 /* Info.plist */,
@@ -153,6 +158,7 @@
 				09F0F0751FDE7929007893D0 /* pause.png */,
 				09F0F0761FDE7929007893D0 /* play.png */,
 				09F0F07D1FDE7B86007893D0 /* image.png */,
+				094E02661FDFAC9300F29546 /* short.png */,
 			);
 			path = icon;
 			sourceTree = "<group>";
@@ -276,6 +282,7 @@
 				09F0F02F1FDE588B007893D0 /* LaunchScreen.storyboard in Resources */,
 				09F0F07C1FDE7929007893D0 /* play.png in Resources */,
 				09F0F07B1FDE7929007893D0 /* pause.png in Resources */,
+				094E02671FDFAC9300F29546 /* short.png in Resources */,
 				09F0F0771FDE7929007893D0 /* music.png in Resources */,
 				09F0F0791FDE7929007893D0 /* back.png in Resources */,
 				09F0F0781FDE7929007893D0 /* heart.png in Resources */,
@@ -307,6 +314,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				09F0F0831FDEE0BA007893D0 /* TouchedAbleProgress.swift in Sources */,
 				09F0F0271FDE588B007893D0 /* ViewController.swift in Sources */,
 				09F0F0251FDE588B007893D0 /* AppDelegate.swift in Sources */,
 			);
